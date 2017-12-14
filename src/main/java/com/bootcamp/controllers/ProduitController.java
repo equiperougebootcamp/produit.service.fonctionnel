@@ -1,6 +1,5 @@
 package com.bootcamp.controllers;
 
-import com.bootcamp.commons.ws.constants.CommonsWsConstants;
 import com.bootcamp.entities.Produit;
 import com.bootcamp.services.ProduitService;
 import com.bootcamp.version.ApiVersions;
@@ -14,10 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
-//import java.util.logging.Level;
-//import java.util.logging.Logger;
 import javax.validation.Valid;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -47,6 +43,28 @@ public class ProduitController {
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return new ResponseEntity<Produit>(produit, httpStatus);
+    }
+
+    @RequestMapping(method = RequestMethod.PUT)
+    @ApiVersions({"1.0"})
+    @ApiOperation(value = "update a new product", notes = "Update a new product")
+    public ResponseEntity<Boolean> update(@RequestBody @Valid Produit produit) throws Exception {
+
+        HttpStatus httpStatus = null;
+            boolean done = produitService.update(produit);
+            httpStatus = HttpStatus.OK;
+            return new ResponseEntity<>(done, httpStatus);
+    }
+
+    @RequestMapping(value="/{id}",method = RequestMethod.DELETE)
+    @ApiVersions({"1.0"})
+    @ApiOperation(value = "delete a new product", notes = "delete a new product")
+    public ResponseEntity<Boolean> update(@PathVariable  int id) throws Exception {
+
+        HttpStatus httpStatus = null;
+        boolean done = produitService.delete(id);
+        httpStatus = HttpStatus.OK;
+        return new ResponseEntity<>(done, httpStatus);
     }
 
     @RequestMapping(method = RequestMethod.GET)

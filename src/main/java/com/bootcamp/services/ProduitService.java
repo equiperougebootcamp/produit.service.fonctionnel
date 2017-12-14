@@ -1,12 +1,17 @@
 package com.bootcamp.services;
 
 import com.bootcamp.commons.constants.DatabaseConstants;
+import com.bootcamp.commons.exceptions.DatabaseException;
 import com.bootcamp.commons.models.Criteria;
 import com.bootcamp.commons.models.Criterias;
+import com.bootcamp.commons.ws.utils.RequestParser;
 import com.bootcamp.crud.ProduitCRUD;
+import com.bootcamp.entities.Post;
 import com.bootcamp.entities.Produit;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -39,6 +44,30 @@ public class ProduitService implements DatabaseConstants {
 
     public boolean update(Produit produit) throws Exception{
         return ProduitCRUD.update(produit);
+    }
+
+
+    public List<Produit> read(HttpServletRequest request) throws SQLException, IllegalAccessException, DatabaseException, InvocationTargetException {
+        Criterias criterias = RequestParser.getCriterias(request);
+        List<String> fields = RequestParser.getFields(request);
+        List<Produit> produits = null;
+        if(criterias == null && fields == null)
+            produits =  ProduitCRUD.read();
+        else if(criterias!= null && fields==null)
+            produits = ProduitCRUD.read(criterias);
+        else if(criterias== null && fields!=null)
+            produits = ProduitCRUD.read(fields);
+        else
+            produits = ProduitCRUD.read(criterias, fields);
+
+        return produits;
+    }
+
+
+    public boolean exist(int id) throws Exception{
+        if(read(id)!=null)
+            return true;
+        return false;
     }
 
 }

@@ -1,0 +1,23 @@
+[
+  {
+    "id":1,
+    "designation":"designation 1",
+    "typeProduit":"simple"
+
+
+  },
+
+  {
+    "id":2,
+    "designation":"designation 1",
+    "typeProduit":"simple"
+
+  },
+
+  {
+    "id":3,
+    "designation":"designation 1",
+    "typeProduit":"simple"
+
+  }
+]
